@@ -1,22 +1,22 @@
-import Post from "../components/Post";
+import Project from "../components/Project";
 import { cookieBasedClient, isAuthenticated } from "../utils/amplify-utils";
-import { onDeletePost } from "./_actions/actions";
+import { onDeleteProject } from "./_actions/actions";
 
 export default async function Home() {
-  const { data: posts } = await cookieBasedClient.models.Post.list({
-    selectionSet: ["title", "id"],
-    authMode: "apiKey",
+  const { data: projects } = await cookieBasedClient.models.Project.list({
+    selectionSet: ["id", "title"],
+    authMode: "userPool",
   });
 
-  console.log(posts);
+  console.log(projects);
   return (
     <main className="flex flex-col items-center justify-between p-24 w-1/2 m-auto">
-      <h1 className="text-2xl pb-10">List of all titles</h1>
-      {posts?.map(async (post, idx) => (
-        <Post
+      <h1 className="text-2xl pb-10">List of all projects</h1>
+      {projects?.map(async (project, idx) => (
+        <Project
           key={idx}
-          post={post}
-          onDelete={onDeletePost}
+          project={project}
+          onDelete={onDeleteProject}
           isSignedIn={await isAuthenticated()}
         />
       ))}

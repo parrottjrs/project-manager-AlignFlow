@@ -4,48 +4,55 @@ import { cookieBasedClient } from "@/src/utils/amplify-utils";
 import { revalidatePath } from "next/cache";
 import { Schema } from "@/amplify/data/resource";
 
-export async function onDeletePost(id: string) {
-  const { data: deletedPost, errors } =
-    await cookieBasedClient.models.Post.delete({
+export async function onDeleteProject(id: string) {
+  const { data: deletedProject, errors } =
+    await cookieBasedClient.models.Project.delete({
       id,
     });
-  console.log("Deleted post:", deletedPost);
+  console.log("Deleted project:", deletedProject);
   console.log("Errors:", errors);
   revalidatePath("/");
 }
 
-export async function createPost(title: string) {
-  const { data: post, errors } = await cookieBasedClient.models.Post.create({
-    title: title,
-  });
-  console.log("Created post:", post);
+export async function createProject(title: string) {
+  const { data: project, errors } =
+    await cookieBasedClient.models.Project.create({
+      title: title,
+    });
+  console.log("Created project:", project);
   console.log("errors:", errors);
   redirect("/");
 }
 
-export async function addComment(
-  content: string,
-  post: Schema["Post"]["type"],
+export async function addTask(
+  title: string,
+  description: string,
+  priority: string,
+  dueDate: string,
+  project: Schema["Project"]["type"],
   paramsId: string
 ) {
-  if (content.trim().length === 0) return;
-  const { data: comment, errors } =
-    await cookieBasedClient.models.Comment.create({
-      postId: post.id,
-      content,
-    });
-  console.log("Created comment", comment);
+  if (description.trim().length === 0) return;
+  const { data: task, errors } = await cookieBasedClient.models.Task.create({
+    title,
+    description,
+    priority,
+    status: "to do",
+    dueDate,
+    projectId: project.id,
+  });
+  console.log("Created task", task);
   console.log("Errors:", errors);
-  revalidatePath(`/post/${paramsId}`);
+  revalidatePath(`/project/${paramsId}`);
 }
 
-export async function deleteComment(formData: FormData) {
+export async function deleteTask(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) return;
-  const { data: deletedComment, errors } =
-    await cookieBasedClient.models.Comment.delete({
+  const { data: deletedTask, errors } =
+    await cookieBasedClient.models.Task.delete({
       id,
     });
-  console.log("Deleted comment:", deletedComment);
+  console.log("Deleted task:", deletedTask);
   console.log("Errors:", errors);
 }

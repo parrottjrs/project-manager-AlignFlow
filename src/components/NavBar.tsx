@@ -40,6 +40,7 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
       router.push("/signin");
     }
   };
+
   const defaultRoutes = [
     {
       href: "/",
@@ -47,7 +48,7 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
     },
     {
       href: "/add",
-      label: "Add Title",
+      label: "Add Project",
       loggedIn: true,
     },
   ];

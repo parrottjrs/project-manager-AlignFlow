@@ -1,7 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  Post: a
+  Project: a
     .model({
       title: a.string().required(),
       owner: a
@@ -9,27 +9,26 @@ const schema = a.schema({
         .authorization((allow) => [
           allow.owner().to(["read", "create", "delete"]),
         ]),
-      comments: a.hasMany("Comment", "postId"),
+      tasks: a.hasMany("Task", "projectId"),
     })
-    .authorization((allow) => [
-      allow.publicApiKey().to(["read"]),
-      allow.owner(),
-    ]),
-  Comment: a
+    .authorization((allow) => [allow.owner()]),
+  Task: a
     .model({
-      content: a.string().required(),
-      postId: a.id(),
-      post: a.belongsTo("Post", "postId"),
+      title: a.string().required(),
+      description: a.string(),
+      dueDate: a.date(),
+      priority: a.string(),
+      status: a.string(),
+      taskId: a.id(),
+      projectId: a.id(),
+      project: a.belongsTo("Project", "projectId"),
       owner: a
         .string()
         .authorization((allow) => [
-          allow.owner().to(["read", "create", "delete"]),
+          allow.owner().to(["read", "create", "update", "delete"]),
         ]),
     })
-    .authorization((allow) => [
-      allow.publicApiKey().to(["read"]),
-      allow.owner(),
-    ]),
+    .authorization((allow) => [allow.owner()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

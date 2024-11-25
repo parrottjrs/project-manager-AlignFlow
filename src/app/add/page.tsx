@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { createPost } from "../_actions/actions";
+import { createProject } from "../_actions/actions";
 
-export default function AddPost() {
+export default function AddProject() {
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState("");
 
   const create = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     startTransition(async () => {
-      createPost(title);
+      createProject(title);
     });
   };
 

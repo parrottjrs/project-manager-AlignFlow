@@ -3,32 +3,32 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Schema } from "../../amplify/data/resource";
 
-export default function Post({
-  post,
+export default function Project({
+  project,
   onDelete,
   isSignedIn,
 }: {
-  post: Pick<Schema["Post"]["type"], "title" | "id">;
+  project: Pick<Schema["Project"]["type"], "title" | "id">;
   onDelete: (id: string) => void;
   isSignedIn: boolean;
 }) {
   const router = useRouter();
   const onDetail = () => {
-    router.push(`posts/${post.id}`);
+    router.push(`projects/${project.id}`);
   };
   return (
     <div className="border bg-gray-100 w-full p-4 rounded flex justify-between ">
       <button onClick={onDetail}>
         <div className="flex gap-2">
-          <div>Title:</div>
-          <div>{post.title}</div>
+          <div>Project:</div>
+          <div>{project.title}</div>
         </div>
       </button>
-      <input type="hidden" name="id" id="id" value={post.id} />
+      <input type="hidden" name="id" id="id" value={project.id} />
       {isSignedIn ? (
         <button
           className="text-red-500 cursor-pointer"
-          onClick={() => onDelete(post.id)}
+          onClick={() => onDelete(project.id)}
         >
           X
         </button>
