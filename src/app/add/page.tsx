@@ -1,7 +1,39 @@
-export default function Add() {
+"use client";
+
+import React, { useState, useTransition } from "react";
+import { createPost } from "../_actions/actions";
+
+export default function AddPost() {
+  const [isPending, startTransition] = useTransition();
+  const [title, setTitle] = useState("");
+
+  const create = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    startTransition(async () => {
+      createPost(title);
+    });
+  };
+
   return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-      <h1>Add</h1>
-    </main>
+    <div>
+      <form onSubmit={create} className="p-4 flex flex-col items-center gap-4">
+        <input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
+        />
+        <button
+          type="submit"
+          className="text-white bg-teal-300 rounded p-4"
+          disabled={isPending}
+        >
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
