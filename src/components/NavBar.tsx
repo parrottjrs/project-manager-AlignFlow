@@ -41,22 +41,6 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
     }
   };
 
-  const defaultRoutes = [
-    {
-      href: "/",
-      label: "Home",
-    },
-    {
-      href: "/add",
-      label: "Add Project",
-      loggedIn: true,
-    },
-  ];
-
-  const routes = defaultRoutes.filter(
-    (route) => route.loggedIn === authCheck || route.loggedIn === undefined
-  );
-
   return (
     <>
       <Flex
@@ -66,11 +50,7 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
         padding={"1rem"}
       >
         <Flex as="nav" alignItems="center" gap="3rem" margin="0 2rem">
-          {routes.map((route) => (
-            <Link key={route.href} href={route.href}>
-              {route.label}
-            </Link>
-          ))}
+          <Link href={"/"}>Home</Link>
         </Flex>
         <Button
           variation="primary"

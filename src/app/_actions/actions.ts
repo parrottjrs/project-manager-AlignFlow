@@ -56,3 +56,31 @@ export async function deleteTask(formData: FormData) {
   console.log("Deleted task:", deletedTask);
   console.log("Errors:", errors);
 }
+
+export async function updateTask(
+  id: string,
+  title: string,
+  description: string,
+  priority: string,
+  status: string,
+  dueDate: string,
+  paramsId: string
+) {
+  if (!id) return;
+
+  const task = {
+    id: id,
+    title: title,
+    description: description,
+    priority: priority,
+    status: status,
+    dueDate: dueDate,
+  };
+
+  const { data: updatedTask, errors } =
+    await cookieBasedClient.models.Task.update(task);
+
+  console.log("Task updated:", updatedTask);
+  console.log("Errors:", errors);
+  revalidatePath(`/project/${paramsId}`);
+}

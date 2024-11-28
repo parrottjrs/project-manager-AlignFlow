@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Schema } from "../../amplify/data/resource";
-
+import { Delete } from "@mui/icons-material";
 export default function Project({
   project,
   onDelete,
@@ -25,14 +25,14 @@ export default function Project({
         </div>
       </button>
       <input type="hidden" name="id" id="id" value={project.id} />
-      {isSignedIn ? (
+      {isSignedIn && (
         <button
           className="text-red-500 cursor-pointer"
           onClick={() => onDelete(project.id)}
         >
-          X
+          <Delete />
         </button>
-      ) : null}
+      )}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Project from "../components/Project";
 import { cookieBasedClient, isAuthenticated } from "../utils/amplify-utils";
 import { onDeleteProject } from "./_actions/actions";
@@ -5,10 +6,9 @@ import { onDeleteProject } from "./_actions/actions";
 export default async function Home() {
   const { data: projects } = await cookieBasedClient.models.Project.list({
     selectionSet: ["id", "title"],
-    authMode: "userPool",
+    authMode: "apiKey",
   });
 
-  console.log(projects);
   return (
     <main className="flex flex-col items-center justify-between p-24 w-1/2 m-auto">
       <h1 className="text-2xl pb-10">List of all projects</h1>
