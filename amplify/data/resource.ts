@@ -19,7 +19,6 @@ const schema = a.schema({
       dueDate: a.date(),
       priority: a.string(),
       status: a.string(),
-      taskId: a.id(),
       projectId: a.id(),
       project: a.belongsTo("Project", "projectId"),
       owner: a

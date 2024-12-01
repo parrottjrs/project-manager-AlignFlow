@@ -29,7 +29,6 @@ export async function addTask(
   description: string,
   priority: string,
   dueDate: string,
-  project: Schema["Project"]["type"],
   paramsId: string
 ) {
   if (description.trim().length === 0) return;
@@ -39,7 +38,7 @@ export async function addTask(
     priority,
     status: "to do",
     dueDate,
-    projectId: project.id,
+    projectId: paramsId,
   });
   console.log("Created task", task);
   console.log("Errors:", errors);

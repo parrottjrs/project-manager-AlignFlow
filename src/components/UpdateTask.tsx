@@ -1,48 +1,53 @@
 "use client";
-import React, { useState, useTransition } from "react";
-import { Schema } from "../../amplify/data/resource";
-import { Task } from "@mui/icons-material";
-import { updateTask } from "../app/_actions/actions";
+
+import React, { useEffect, useState, useTransition } from "react";
+import { updateTask } from "@/src/app/_actions/actions";
+import { useRouter } from "next/navigation";
+
+interface Task {
+  title: string;
+  id: string;
+  description: string | null;
+  priority: string | null;
+  status: string | null;
+  dueDate: string | null;
+}
 
 export default function UpdateTask({
+  params,
   task,
-  paramsId,
 }: {
-  task: {
-    id: string;
-    title: string;
-    description: string;
-    dueDate: string;
-    priority: string;
-    status: string;
-  };
-
-  paramsId: string;
+  params: { projectId: string; taskId: string };
+  task: Task;
 }) {
-  const id = task.id;
+  if (!params.projectId || !params.taskId) return null;
+
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState(task.title);
-  const [priority, setPriority] = useState(task.priority);
-  const [selectedDate, setSelectedDate] = useState(task.dueDate);
-  const [description, setDescription] = useState(task.description);
-  const [status, setStatus] = useState(task.status);
-
+  const [priority, setPriority] = useState(task.priority || "low");
+  const [selectedDate, setSelectedDate] = useState(task.dueDate || "");
+  const [description, setDescription] = useState(task.description || "");
+  const [status, setStatus] = useState(task.status || "to do");
+  const router = useRouter();
   const update = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const id = task.id;
-    startTransition(async () => {
+    startTransition(() => {
       updateTask(
-        id,
+        params.taskId,
         title,
         description,
-        selectedDate,
         priority,
         status,
-        paramsId
+        selectedDate,
+        params.projectId
       );
+      router.push(`/projects/${params.projectId}`);
     });
   };
 
+  useEffect(() => {
+    console.log(typeof selectedDate);
+  }, [selectedDate]);
   return (
     <form onSubmit={update} className="p-4 flex flex-row gap-8">
       <div className="flex flex-col items-start gap-2">
@@ -107,6 +112,47 @@ export default function UpdateTask({
               value="high"
               checked={priority === "high"}
               onChange={(e) => setPriority(e.target.value)}
+              className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <label htmlFor="status">Status</label>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row items-center gap-2">
+            <span className="text-sm">To-do</span>
+            <input
+              type="radio"
+              name="status"
+              id="status"
+              value="to do"
+              checked={status === "to do"}
+              onChange={(e) => setStatus(e.target.value)}
+              className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <span className="text-sm">In progress</span>
+            <input
+              type="radio"
+              name="status"
+              id="status"
+              value="in progress"
+              checked={status === "in progress"}
+              onChange={(e) => setStatus(e.target.value)}
+              className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <span className="text-sm">Completed</span>
+            <input
+              type="radio"
+              name="status"
+              id="status"
+              value="completed"
+              checked={status === "completed"}
+              onChange={(e) => setStatus(e.target.value)}
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
