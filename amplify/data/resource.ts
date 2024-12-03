@@ -27,7 +27,10 @@ const schema = a.schema({
           allow.owner().to(["read", "create", "update", "delete"]),
         ]),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow) => [allow.owner()])
+    .secondaryIndexes((index) => [
+      index("projectId").sortKeys(["dueDate"]).queryField("listByStatus"),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
