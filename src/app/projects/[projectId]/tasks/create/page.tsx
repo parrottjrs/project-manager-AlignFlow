@@ -61,7 +61,7 @@ export default function CreateTask({
       <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-6">
         <label htmlFor="priority">Priority</label>
         <div className="flex flex-row gap-6">
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">Low</span>
             <input
               type="radio"
@@ -73,7 +73,7 @@ export default function CreateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-2">
+          <div className=" flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">Medium</span>
             <input
               type="radio"
@@ -85,7 +85,7 @@ export default function CreateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-2">
+          <div className=" flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">High</span>
             <input
               type="radio"
@@ -107,6 +107,7 @@ export default function CreateTask({
           id="dueDate"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
+          className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
         />
       </div>
       <div className="flex items-center pt-4">

@@ -49,8 +49,11 @@ export default function UpdateTask({
     console.log(typeof selectedDate);
   }, [selectedDate]);
   return (
-    <form onSubmit={update} className="p-4 flex flex-row gap-8">
-      <div className="flex flex-col items-start gap-2">
+    <form
+      onSubmit={update}
+      className="border bg-gray-100 w-1/2 p-4 rounded flex flex-col justify-between m-auto"
+    >
+      <div className="border-b flex flex-row justify-items-start items-center  pb-4 gap-2">
         <label htmlFor="title">Title</label>
         <input
           type="text"
@@ -63,7 +66,7 @@ export default function UpdateTask({
           required
         />
       </div>
-      <div className="flex flex-col items-start gap-2">
+      <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-2">
         <label htmlFor="description">Description</label>
         <input
           type="text"
@@ -76,10 +79,10 @@ export default function UpdateTask({
         />
       </div>
 
-      <div className="flex flex-col items-start gap-2">
+      <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-6">
         <label htmlFor="priority">Priority</label>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row gap-6">
+          <div className="flex flex-row justify-items-start items-center  gap-2">
             <span className="text-sm">Low</span>
             <input
               type="radio"
@@ -91,7 +94,7 @@ export default function UpdateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row justify-items-start items-center  gap-2">
             <span className="text-sm">Medium</span>
             <input
               type="radio"
@@ -103,7 +106,7 @@ export default function UpdateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className=" flex flex-row justify-items-start items-center  gap-2">
             <span className="text-sm">High</span>
             <input
               type="radio"
@@ -117,10 +120,10 @@ export default function UpdateTask({
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-start gap-2">
+      <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-6">
         <label htmlFor="status">Status</label>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row gap-6">
+          <div className=" flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">To-do</span>
             <input
               type="radio"
@@ -132,7 +135,7 @@ export default function UpdateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className=" flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">In progress</span>
             <input
               type="radio"
@@ -144,7 +147,7 @@ export default function UpdateTask({
               className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
             />
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row justify-items-start items-center gap-2">
             <span className="text-sm">Completed</span>
             <input
               type="radio"
@@ -158,7 +161,7 @@ export default function UpdateTask({
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-start gap-2">
+      <div className="border-b flex flex-row justify-items-start items-center  py-4 gap-2">
         <label htmlFor="dueDate">Due date</label>
         <input
           type="date"
@@ -166,9 +169,10 @@ export default function UpdateTask({
           id="dueDate"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
+          className="border border-gray-200 text-gray-900 block p-2 rounded-lg"
         />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center pt-4">
         <button
           type="submit"
           className="text-white bg-teal-600 rounded px-4 py-2 h-10"
