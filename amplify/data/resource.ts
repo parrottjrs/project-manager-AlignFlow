@@ -10,6 +10,7 @@ const schema = a.schema({
           allow.owner().to(["read", "create", "delete"]),
         ]),
       tasks: a.hasMany("Task", "projectId"),
+      taskCount: a.integer().default(0).required(),
     })
     .authorization((allow) => [allow.owner()]),
   Task: a

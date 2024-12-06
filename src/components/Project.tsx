@@ -8,7 +8,7 @@ export default function Project({
   onDelete,
   isSignedIn,
 }: {
-  project: Pick<Schema["Project"]["type"], "title" | "id">;
+  project: Pick<Schema["Project"]["type"], "title" | "id" | "taskCount">;
   onDelete: (id: string) => void;
   isSignedIn: boolean;
 }) {
@@ -22,6 +22,7 @@ export default function Project({
         <div className="flex gap-2">
           <div>Project:</div>
           <div>{project.title}</div>
+          <div>{project.taskCount}</div>
         </div>
       </button>
       <input type="hidden" name="id" id="id" value={project.id} />

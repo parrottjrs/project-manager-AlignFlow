@@ -27,7 +27,7 @@ export default async function Projects({
       id: params.projectId,
     },
     {
-      selectionSet: ["id", "title"],
+      selectionSet: ["id", "title", "taskCount", "tasks.id"],
       authMode: "userPool",
     }
   );
@@ -43,12 +43,12 @@ export default async function Projects({
 
   const handleDelete = async (formData: FormData) => {
     "use server";
-    await deleteTask(formData);
+    if (!project) return;
+    await deleteTask(formData, project?.taskCount, params.projectId);
     revalidatePath(`/projects/${params.projectId}`);
   };
 
   if (!project) return null;
-  console.log(sortedTasks);
 
   return (
     <div className="flex flex-col items-items-start w-3/4 p-4 gap-4 m-auto">

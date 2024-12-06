@@ -1,6 +1,11 @@
 "use client";
 import { Schema } from "@/amplify/data/resource";
-import { addTask } from "@/src/app/_actions/actions";
+import {
+  createTask,
+  updateTask,
+  updateTaskCount,
+} from "@/src/app/_actions/actions";
+import { cookieBasedClient } from "@/src/utils/amplify-utils";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 
@@ -22,7 +27,7 @@ export default function CreateTask({
   const add = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(async () => {
-      addTask(title, description, priority, selectedDate, params.projectId);
+      createTask(title, description, priority, selectedDate, params.projectId);
     });
     router.push(`/projects/${params.projectId}`);
   };

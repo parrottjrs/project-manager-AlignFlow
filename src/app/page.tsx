@@ -6,7 +6,7 @@ import CreateProject from "../components/CreateProject";
 
 export default async function Home() {
   const { data: projects } = await cookieBasedClient.models.Project.list({
-    selectionSet: ["id", "title"],
+    selectionSet: ["id", "title", "taskCount"],
     authMode: "userPool",
   });
 
