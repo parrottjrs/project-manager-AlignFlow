@@ -1,8 +1,8 @@
 "use server";
-
 import React from "react";
 import { cookieBasedClient, isAuthenticated } from "@/src/utils/amplify-utils";
 import UpdateTask from "@/src/components/UpdateTask";
+
 interface Task {
   title: string;
   id: string;
@@ -37,7 +37,9 @@ export default async function UpdateTaskPage({
       authMode: "userPool",
     }
   );
-  if (!task) return null;
+
+  if (!task || !isSignedIn) return null;
   const typedTask: Task = task;
+
   return <UpdateTask params={params} task={typedTask} />;
 }

@@ -22,13 +22,14 @@ export default function UpdateTask({
 }) {
   if (!params.projectId || !params.taskId) return null;
 
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState(task.title);
   const [priority, setPriority] = useState(task.priority || "low");
   const [selectedDate, setSelectedDate] = useState(task.dueDate || "");
   const [description, setDescription] = useState(task.description || "");
   const [status, setStatus] = useState(task.status || "to do");
-  const router = useRouter();
+
   const update = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(() => {
@@ -45,9 +46,6 @@ export default function UpdateTask({
     });
   };
 
-  useEffect(() => {
-    console.log(typeof selectedDate);
-  }, [selectedDate]);
   return (
     <form
       onSubmit={update}

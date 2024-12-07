@@ -1,9 +1,7 @@
 "use server";
-import { data } from "./../../../amplify/data/resource";
 import { redirect } from "next/navigation";
 import { cookieBasedClient } from "@/src/utils/amplify-utils";
 import { revalidatePath } from "next/cache";
-import { Schema } from "@/amplify/data/resource";
 
 export async function onDeleteProject(id: string) {
   const { data: deletedProject, errors } =
@@ -37,12 +35,9 @@ export async function updateTaskCount(projectId: string, operation: string) {
     }
   );
 
-  console.log("Updating count...");
   const taskCount = currentProject?.taskCount;
   if (taskCount === null || taskCount === undefined) return;
-  console.log("Count during update:", taskCount);
   const newCount = operation === "add" ? taskCount + 1 : taskCount - 1;
-  console.log("New count:", newCount);
   const project = { id: projectId, taskCount: newCount };
   const { data: updatedProject, errors } =
     await cookieBasedClient.models.Project.update(project);
@@ -74,11 +69,7 @@ export async function createTask(
   revalidatePath(`/project/${paramsId}`);
 }
 
-export async function deleteTask(
-  formData: FormData,
-  count: number,
-  projectId: string
-) {
+export async function deleteTask(formData: FormData, projectId: string) {
   const id = formData.get("id")?.toString();
   if (!id) return;
   const { data: deletedTask, errors } =

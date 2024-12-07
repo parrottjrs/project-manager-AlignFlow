@@ -1,11 +1,5 @@
 "use client";
-import { Schema } from "@/amplify/data/resource";
-import {
-  createTask,
-  updateTask,
-  updateTaskCount,
-} from "@/src/app/_actions/actions";
-import { cookieBasedClient } from "@/src/utils/amplify-utils";
+import { createTask } from "@/src/app/_actions/actions";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 

@@ -44,7 +44,7 @@ export default async function Projects({
   const handleDelete = async (formData: FormData) => {
     "use server";
     if (!project) return;
-    await deleteTask(formData, project?.taskCount, params.projectId);
+    await deleteTask(formData, params.projectId);
     revalidatePath(`/projects/${params.projectId}`);
   };
 
