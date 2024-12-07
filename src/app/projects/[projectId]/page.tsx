@@ -1,7 +1,7 @@
 import { cookieBasedClient, isAuthenticated } from "@/src/utils/amplify-utils";
 import { revalidatePath } from "next/cache";
 import { deleteTask } from "@/src/app/_actions/actions";
-import React from "react";
+import React, { useEffect } from "react";
 import { Edit } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
@@ -47,6 +47,8 @@ export default async function Projects({
     await deleteTask(formData, params.projectId);
     revalidatePath(`/projects/${params.projectId}`);
   };
+
+  console.log(sortedTasks);
 
   if (!project) return null;
 

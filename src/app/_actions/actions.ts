@@ -8,8 +8,12 @@ export async function onDeleteProject(id: string) {
     await cookieBasedClient.models.Project.delete({
       id,
     });
-  console.log("Deleted project:", deletedProject);
-  console.log("Errors:", errors);
+
+  if (!errors) {
+    console.log("Deleted project:", deletedProject);
+  } else {
+    console.log("Error deleting project:", errors);
+  }
   revalidatePath("/");
 }
 
@@ -18,9 +22,14 @@ export async function createProject(title: string) {
     await cookieBasedClient.models.Project.create({
       title: title,
       taskCount: 0,
+      status: "In progress",
     });
-  console.log("Created project:", project);
-  console.log("errors:", errors);
+
+  if (!errors) {
+    console.log("Created project:", project);
+  } else {
+    console.log("Error creating project:", errors);
+  }
   redirect("/");
 }
 
@@ -42,8 +51,11 @@ export async function updateTaskCount(projectId: string, operation: string) {
   const { data: updatedProject, errors } =
     await cookieBasedClient.models.Project.update(project);
 
-  console.log(`New task count for project ${projectId}:`, newCount);
-  console.log(`Error updating task count for project ${projectId}:`, errors);
+  if (!errors) {
+    console.log(`New task count for project ${projectId}:`, newCount);
+  } else {
+    console.log(`Error updating task count for project ${projectId}:`, errors);
+  }
   revalidatePath("/");
 }
 
@@ -64,8 +76,11 @@ export async function createTask(
     projectId: paramsId,
   });
   await updateTaskCount(paramsId, "add");
-  console.log("Created task", task);
-  console.log("Error creating task:", errors);
+  if (!errors) {
+    console.log("Created task", task);
+  } else {
+    console.log("Error creating task:", errors);
+  }
   revalidatePath(`/project/${paramsId}`);
 }
 
@@ -78,8 +93,27 @@ export async function deleteTask(formData: FormData, projectId: string) {
     });
   updateTaskCount(projectId, "subtract");
 
-  console.log("Deleted task:", deletedTask);
-  console.log("Errors:", errors);
+  if (!errors) {
+    console.log("Deleted task:", deletedTask);
+  } else {
+    console.log("Error deleting task:", errors);
+  }
+}
+
+async function updateProjectStatus(id: string, updatedStatus: string) {
+  if (!id) return;
+
+  const { data: updatedProject, errors } =
+    await cookieBasedClient.models.Project.update({
+      id: id,
+      status: updatedStatus,
+    });
+
+  if (!errors) {
+    console.log("Project status updated:", updatedProject);
+  } else {
+    console.log("Error updating project status:", errors);
+  }
 }
 
 export async function updateTask(
@@ -102,10 +136,27 @@ export async function updateTask(
     dueDate: dueDate,
   };
 
+  if (task.status === "completed") {
+    const { data: tasks } = await cookieBasedClient.models.Task.listByStatus({
+      projectId: paramsId,
+    });
+    const result = tasks.some(
+      (task) => task.id !== id && task.status !== "completed"
+    )
+      ? "in progress"
+      : "completed";
+    if (result === "completed")
+      await updateProjectStatus(paramsId, "completed");
+  }
+
   const { data: updatedTask, errors } =
     await cookieBasedClient.models.Task.update(task);
 
-  console.log("Task updated:", updatedTask);
-  console.log("Error updating task:", errors);
+  if (!errors) {
+    console.log("Task updated:", updatedTask);
+  } else {
+    console.log("Error updating task:", errors);
+  }
+
   revalidatePath(`/project/${paramsId}`);
 }

@@ -8,7 +8,10 @@ export default function Project({
   onDelete,
   isSignedIn,
 }: {
-  project: Pick<Schema["Project"]["type"], "title" | "id" | "taskCount">;
+  project: Pick<
+    Schema["Project"]["type"],
+    "title" | "id" | "taskCount" | "status"
+  >;
   onDelete: (id: string) => void;
   isSignedIn: boolean;
 }) {
@@ -23,6 +26,7 @@ export default function Project({
           <div>Project:</div>
           <div>{project.title}</div>
           <div>{project.taskCount}</div>
+          <div>{project.status}</div>
         </div>
       </button>
       <input type="hidden" name="id" id="id" value={project.id} />
