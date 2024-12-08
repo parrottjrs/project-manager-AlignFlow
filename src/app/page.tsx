@@ -3,9 +3,11 @@ import Project from "../components/Project";
 import { cookieBasedClient, isAuthenticated } from "../utils/amplify-utils";
 import { onDeleteProject } from "./_actions/actions";
 import CreateProject from "../components/CreateProject";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const isSignedIn = await isAuthenticated();
+  if (!isSignedIn) redirect("/signin");
   const { data: projects } = await cookieBasedClient.models.Project.list({
     selectionSet: ["id", "title", "taskCount", "incompleteTaskCount"],
     authMode: "userPool",

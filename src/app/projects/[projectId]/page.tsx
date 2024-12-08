@@ -6,6 +6,7 @@ import { Edit } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import SortTasks from "@/src/components/SortTasks";
+import { redirect } from "next/navigation";
 
 export default async function Projects({
   params,
@@ -14,8 +15,10 @@ export default async function Projects({
   params: { projectId: string };
   searchParams: { sort: string; filter: string };
 }) {
-  if (!params.projectId) return null;
   const isSignedIn = await isAuthenticated();
+  if (!isSignedIn) redirect("/signin");
+  if (!params.projectId) return null;
+
   const sortDirection = searchParams.sort === "DESC" ? "DESC" : "ASC"; //had to define explicitly - graphQL sortDirection throws type error with string
   const filter: any = {};
   if (searchParams.filter && searchParams.filter !== "all") {
