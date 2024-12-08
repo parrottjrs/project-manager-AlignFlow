@@ -43,8 +43,6 @@ async function updateTaskCount(
 ) {
   if (!projectId) return;
 
-  console.log(`Fetching ${countType} for project ${projectId}...`);
-
   const { data: currentProject } = await cookieBasedClient.models.Project.get(
     {
       id: projectId,
@@ -69,7 +67,6 @@ async function updateTaskCount(
   }
 
   const newCount = operation === "add" ? taskCount + 1 : taskCount - 1;
-  console.log(`New ${countType} for project ${projectId} is ${newCount}`);
 
   const project =
     countType === "taskCount"
@@ -80,7 +77,6 @@ async function updateTaskCount(
     await cookieBasedClient.models.Project.update(project);
 
   if (!errors) {
-    console.log(`New ${countType} for project ${projectId}:`, newCount);
     console.log(`Updated project:`, project);
   } else {
     console.log(`Error updating task count for project ${projectId}:`, errors);
@@ -96,7 +92,7 @@ export async function createTask(
   projectId: string
 ) {
   if (description.trim().length === 0) return;
-  console.log("Creating new task...");
+
   const { data: task, errors } = await cookieBasedClient.models.Task.create({
     title,
     description,
@@ -121,14 +117,11 @@ export async function deleteTask(formData: FormData, projectId: string) {
   const id = formData.get("id")?.toString();
   if (!id) return;
 
-  console.log("Deleting task...");
-
   const { data: deletedTask, errors } =
     await cookieBasedClient.models.Task.delete({
       id,
     });
 
-  console.log("deleted task status:", deletedTask?.status);
   if (deletedTask?.status !== "completed") {
     await updateTaskCount(projectId, "incompleteTaskCount", "subtract");
   }
@@ -142,35 +135,7 @@ export async function deleteTask(formData: FormData, projectId: string) {
   }
 }
 
-// async function updateProjectStatus(id: string, updatedStatus: string) {
-//   if (!id) return;
-
-//   const { data: tasks } = await cookieBasedClient.models.Task.listByStatus({
-//     projectId: id,
-//   });
-//   const result = tasks.some(
-//     (task) => task.id !== id && task.status !== "completed"
-//   )
-//     ? "in progress"
-//     : "completed";
-
-//   if (result === "completed") {
-//     const { data: updatedProject, errors } =
-//       await cookieBasedClient.models.Project.update({
-//         id: id,
-//         status: updatedStatus,
-//       });
-
-//     if (!errors) {
-//       console.log("Project status updated:", updatedProject);
-//     } else {
-//       console.log("Error updating project status:", errors);
-//     }
-//   }
-// }
-
 async function checkTaskStatus(taskId: string) {
-  console.log(`Fetching task status for task ${taskId}...`);
   const { data: task } = await cookieBasedClient.models.Task.get(
     {
       id: taskId,
@@ -207,9 +172,7 @@ export async function updateTask(
     dueDate: dueDate,
   };
 
-  const currentTaskStatus = await checkTaskStatus(taskId); //check to see if task's status is actually changing
-
-  console.log(`Task status is ${currentTaskStatus}`);
+  const currentTaskStatus = await checkTaskStatus(taskId); //check to see if task's status is staying the same
 
   if (status !== currentTaskStatus) {
     //conditionally update amount of incomplete tasks on project

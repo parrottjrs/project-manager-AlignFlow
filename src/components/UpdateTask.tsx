@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { updateTask } from "@/src/app/_actions/actions";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 interface Task {
   title: string;
