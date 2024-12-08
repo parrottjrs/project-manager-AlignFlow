@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { updateTask } from "@/src/app/_actions/actions";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 interface Task {
   title: string;
@@ -32,8 +33,8 @@ export default function UpdateTask({
 
   const update = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    startTransition(() => {
-      updateTask(
+    startTransition(async () => {
+      await updateTask(
         params.taskId,
         title,
         description,
@@ -42,6 +43,7 @@ export default function UpdateTask({
         selectedDate,
         params.projectId
       );
+
       router.push(`/projects/${params.projectId}`);
     });
   };

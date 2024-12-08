@@ -11,7 +11,7 @@ const schema = a.schema({
         ]),
       tasks: a.hasMany("Task", "projectId"),
       taskCount: a.integer().default(0).required(),
-      status: a.string(),
+      incompleteTaskCount: a.integer().default(0).required(),
     })
     .authorization((allow) => [allow.owner()]),
   Task: a

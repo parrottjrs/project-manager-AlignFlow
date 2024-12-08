@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Schema } from "../../amplify/data/resource";
 import { Delete } from "@mui/icons-material";
+import { Button } from "@aws-amplify/ui-react";
 export default function Project({
   project,
   onDelete,
@@ -10,34 +11,46 @@ export default function Project({
 }: {
   project: Pick<
     Schema["Project"]["type"],
-    "title" | "id" | "taskCount" | "status"
+    "title" | "id" | "taskCount" | "incompleteTaskCount"
   >;
   onDelete: (id: string) => void;
   isSignedIn: boolean;
 }) {
   const router = useRouter();
+  const projectStatus =
+    project.incompleteTaskCount === 0 && project.taskCount > 0
+      ? "Complete"
+      : "In progress";
+
   const onDetail = () => {
     router.push(`projects/${project.id}`);
   };
+
+  console.log(project);
   return (
-    <div className="border bg-gray-100 w-full p-4 rounded flex justify-between ">
-      <button onClick={onDetail}>
-        <div className="flex gap-2">
-          <div>Project:</div>
-          <div>{project.title}</div>
-          <div>{project.taskCount}</div>
-          <div>{project.status}</div>
-        </div>
-      </button>
-      <input type="hidden" name="id" id="id" value={project.id} />
-      {isSignedIn && (
-        <button
-          className="text-red-500 cursor-pointer"
-          onClick={() => onDelete(project.id)}
+    <tr className="flex flex-row w-3/4 p-4 rounded border bg-slate-100 flex items-center ">
+      <td className="w-1/4 text-left">{project.title}</td>
+      <td className="w-1/4 text-left">{project.taskCount}</td>
+      <td className="w-1/4 text-left">{projectStatus}</td>
+      <td className="flex flex-row gap-4 w-1/4 text-left">
+        <input type="hidden" name="id" id="id" value={project.id} />
+        <Button
+          variation="primary"
+          borderRadius="2rem"
+          className="mr-4"
+          onClick={onDetail}
         >
-          <Delete />
-        </button>
-      )}
-    </div>
+          See tasks
+        </Button>
+        {isSignedIn && (
+          <button
+            className="text-red-500 cursor-pointer"
+            onClick={() => onDelete(project.id)}
+          >
+            <Delete />
+          </button>
+        )}
+      </td>
+    </tr>
   );
 }

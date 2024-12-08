@@ -1,7 +1,7 @@
 import { cookieBasedClient, isAuthenticated } from "@/src/utils/amplify-utils";
 import { revalidatePath } from "next/cache";
 import { deleteTask } from "@/src/app/_actions/actions";
-import React, { useEffect } from "react";
+import React from "react";
 import { Edit } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
@@ -48,13 +48,11 @@ export default async function Projects({
     revalidatePath(`/projects/${params.projectId}`);
   };
 
-  console.log(sortedTasks);
-
   if (!project) return null;
 
   return (
     <div className="flex flex-col items-items-start w-3/4 p-4 gap-4 m-auto">
-      <h1 className="text-2xl font-bold">{project.title}</h1>
+      <h1 className="text-2xl font-bold">Tasks for {project.title}</h1>
       <Link
         className={"w-32"}
         href={`/projects/${params.projectId}/tasks/create`}
@@ -64,38 +62,50 @@ export default async function Projects({
         </button>
       </Link>
       <SortTasks />
-      <div className={"flex flex-col"}>
-        {sortedTasks.map((task, idx) => (
-          <div
-            key={idx}
-            className="flex flex-row  w-1/2 p-4 rounded border bg-slate-100 flex justify-between"
-          >
-            <>
-              <div>{task.title}</div>
-              <div>{task.description}</div>
-              <div>{task.status}</div>
-              <div>{task.priority}</div>
-              <div>{task.dueDate}</div>
-            </>
-            <div className="flex flex-ro items-center gap-4">
-              <Link
-                href={`/projects/${params.projectId}/tasks/${task.id}/edit`}
-              >
-                <Edit />
-              </Link>
 
-              <form action={handleDelete}>
-                <input type="hidden" name="id" id="id" value={task.id} />
-                {isSignedIn && (
-                  <button type="submit">
-                    <DeleteIcon />
-                  </button>
-                )}
-              </form>
-            </div>
-          </div>
-        ))}
-      </div>
+      <table>
+        <thead>
+          <tr className="flex flex-row w-full p-4 rounded border bg-slate-100 flex items-center gap-4">
+            <th className="w-1/6 text-left">Name</th>
+            <th className="w-1/6 text-left">Status</th>
+            <th className="w-1/6 text-left">Priority</th>
+            <th className="w-1/6 text-left">Due Date</th>
+            <th className="w-1/6 text-left">Description</th>
+            <th className="w-1/6 text-left">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedTasks.map((task, idx) => (
+            <tr
+              key={idx}
+              className="flex flex-row w-full p-4 rounded border bg-slate-100 flex items-center gap-4"
+            >
+              <td className="w-1/6 text-left">{task.title}</td>
+              <td className="w-1/6 text-left">{task.status}</td>
+              <td className="w-1/6 text-left">{task.priority}</td>
+              <td className="w-1/6 text-left">{task.dueDate}</td>
+              <td className="w-1/6 text-left">{task.description}</td>
+
+              <td className="w-1/6 flex flex-row items-center text-left gap-4">
+                <Link
+                  href={`/projects/${params.projectId}/tasks/${task.id}/edit`}
+                >
+                  <Edit />
+                </Link>
+
+                <form action={handleDelete}>
+                  <input type="hidden" name="id" id="id" value={task.id} />
+                  {isSignedIn && (
+                    <button type="submit">
+                      <DeleteIcon />
+                    </button>
+                  )}
+                </form>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
