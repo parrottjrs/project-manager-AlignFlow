@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button, Divider, Flex } from "@aws-amplify/ui-react";
@@ -10,7 +9,7 @@ import { useTransition } from "react";
 
 export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
   const [authCheck, setAuthCheck] = useState(isSignedIn);
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   const router = useRouter();
   useEffect(() => {

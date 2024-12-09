@@ -55,20 +55,19 @@ async function updateTaskCount(
 
   const taskCount = currentProject?.[countType];
 
-  console.log(`${countType} for project ${projectId} is ${taskCount}.`);
-
   if (
     taskCount === null ||
     taskCount === undefined ||
-    (taskCount === 0 && operation === "subtract")
+    (taskCount === 0 && operation === "subtract") //don't want negative values!
   ) {
     console.log(`Cannot update ${countType} for project ${projectId}`);
     return;
   }
 
-  const newCount = operation === "add" ? taskCount + 1 : taskCount - 1;
+  const newCount = operation === "add" ? taskCount + 1 : taskCount - 1; //No real need to use if/else if since operation has a strict type
 
   const project =
+    //Same as above: countType has a strict type
     countType === "taskCount"
       ? { id: projectId, taskCount: newCount }
       : { id: projectId, incompleteTaskCount: newCount };
@@ -77,7 +76,7 @@ async function updateTaskCount(
     await cookieBasedClient.models.Project.update(project);
 
   if (!errors) {
-    console.log(`Updated project:`, project);
+    console.log(`Updated project:`, updatedProject);
   } else {
     console.log(`Error updating task count for project ${projectId}:`, errors);
   }

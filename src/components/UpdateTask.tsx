@@ -20,8 +20,6 @@ export default function UpdateTask({
   params: { projectId: string; taskId: string };
   task: Task;
 }) {
-  if (!params.projectId || !params.taskId) return null;
-
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState(task.title);
@@ -46,7 +44,7 @@ export default function UpdateTask({
       router.push(`/projects/${params.projectId}`);
     });
   };
-
+  if (!params.projectId || !params.taskId) return null;
   return (
     <form
       onSubmit={update}
