@@ -20,7 +20,8 @@ export default async function Projects({
   if (!params.projectId) return null;
 
   const sortDirection = searchParams.sort === "DESC" ? "DESC" : "ASC"; //had to define explicitly - graphQL sortDirection throws type error with string
-  //@ts-ignore
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const filter: any = {}; //couldn't figure out how to type this...
 
   if (searchParams.filter && searchParams.filter !== "all") {

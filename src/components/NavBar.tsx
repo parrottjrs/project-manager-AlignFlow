@@ -9,7 +9,7 @@ import { useTransition } from "react";
 
 export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
   const [authCheck, setAuthCheck] = useState(isSignedIn);
-  const [_, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
   useEffect(() => {
@@ -56,6 +56,7 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
           borderRadius="2rem"
           className="mr-4"
           onClick={signOutSignIn}
+          disabled={isPending}
         >
           {authCheck ? "Sign Out" : "Sign In"}
         </Button>
